@@ -3,4 +3,4 @@ tgcrypto==1.2.5
 pymongo[srv]==4.13.2
 motor==3.7.1
 marshmallow==4.0.0
-umongo==3.1.0
+beanie==2.0.0
