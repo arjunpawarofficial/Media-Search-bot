@@ -1,18 +1,29 @@
 import logging
 import logging.config
+from pathlib import Path
 
-# Get logging configurations
-logging.config.fileConfig('logging.conf')
-logging.getLogger().setLevel(logging.WARNING)
-
-from pyrogram import Client, __version__
+from pyrogram import Client, __version__ as pyrogram_version
 from pyrogram.raw.all import layer
-from core.utils import Media
+
+# Local imports (update these if your structure is different)
+from core.utils.media import Media  # Assuming Media is now in core/utils/media.py
 from info import SESSION, API_ID, API_HASH, BOT_TOKEN
 
 
-class Bot(Client):
+# Setup logging
+def setup_logging():
+    config_path = Path("logging.conf")
+    if config_path.exists():
+        logging.config.fileConfig(config_path)
+    else:
+        logging.basicConfig(
+            level=logging.INFO,
+            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        )
+    logging.getLogger().setLevel(logging.WARNING)
 
+
+class Bot(Client):
     def __init__(self):
         super().__init__(
             name=SESSION,
@@ -23,18 +34,22 @@ class Bot(Client):
             plugins={"root": "plugins"},
             sleep_threshold=5,
         )
+        self.username: str = ""
 
     async def start(self):
         await super().start()
         await Media.ensure_indexes()
+
         me = await self.get_me()
-        self.username = '@' + me.username
-        print(f"{me.first_name} with for Pyrogram v{__version__} (Layer {layer}) started on {me.username}.")
+        self.username = f"@{me.username}"
+        print(f"{me.first_name} running on Pyrogram v{pyrogram_version} (Layer {layer}) as {self.username}.")
 
     async def stop(self, *args):
         await super().stop()
         print("Bot stopped. Bye.")
 
 
-app = Bot()
-app.run()
+if __name__ == "__main__":
+    setup_logging()
+    app = Bot()
+    app.run()
