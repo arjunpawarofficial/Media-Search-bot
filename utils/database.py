@@ -14,7 +14,7 @@ from .helpers import unpack_new_file_id
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-# Global MongoDB client
+# Global MongoDB client.
 client = AsyncIOMotorClient(DATABASE_URI)
 
 
