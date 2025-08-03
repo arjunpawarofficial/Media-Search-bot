@@ -4,7 +4,7 @@ import logging.config
 from pyrogram import Client, __version__
 from pyrogram.raw.all import layer
 from info import SESSION, API_ID, API_HASH, BOT_TOKEN
-from utils.database import init_db, Media  
+from utils.database import Media, init_db  
 
 class Bot(Client):
 
@@ -25,7 +25,7 @@ class Bot(Client):
         await init_db()  # initialize beanie here
         me = await self.get_me()
         self.username = '@' + me.username
-        print(f"{me.first_name} running as Pyrogram v{__version__} (Layer {layer}) on {me.username}")
+        print(f"{me.first_name} with Pyrogram v{__version__} (Layer {layer}) started.")
 
 
     async def stop(self, *args):
