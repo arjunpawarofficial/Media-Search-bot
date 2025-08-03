@@ -1,6 +1,5 @@
-pyrogram~=2.0.106
-tgcrypto==1.2.5
-pymongo[srv]==4.13.2
-motor==3.7.1
-marshmallow==4.0.0
-beanie==2.0.0
+beanie>=1.23.5
+motor>=3.4.0
+pymongo>=4.7.1
+pyrogram>=2.0.106
+tgcrypto>=1.2.5
