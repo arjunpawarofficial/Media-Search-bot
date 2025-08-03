@@ -19,7 +19,7 @@ class Bot(Client):
             sleep_threshold=5,
         )
 
-   class Bot(Client):
+  
     async def start(self):
         await super().start()
         await init_db()  # initialize beanie here
