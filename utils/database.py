@@ -34,7 +34,7 @@ class Media(Document):
 
 async def save_file(media):
     """Save file in database"""
- client = AsyncIOMotorClient(DATABASE_URI)
+
     file_id, file_ref = unpack_new_file_id(media.file_id)
 
     try:
@@ -51,7 +51,7 @@ async def save_file(media):
         logger.exception('Error occurred while saving file in database')
     else:
         try:
-            await init_beanie(database=client[DATABASE_NAME], document_models=[Media])
+           await file.insert()
         except DuplicateKeyError:
             logger.warning(media.file_name + " is already saved in database")
         else:
