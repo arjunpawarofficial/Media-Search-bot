@@ -7,7 +7,7 @@ logging.getLogger().setLevel(logging.WARNING)
 
 from pyrogram import Client, __version__
 from pyrogram.raw.all import layer
-from utils import Media
+from core.utils import Media
 from info import SESSION, API_ID, API_HASH, BOT_TOKEN
 
 
