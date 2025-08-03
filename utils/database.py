@@ -8,7 +8,7 @@ from pymongo.errors import DuplicateKeyError
 from pydantic import BaseModel
 
 from info import DATABASE_URI, DATABASE_NAME, COLLECTION_NAME, USE_CAPTION_FILTER
-from .models import Media
+
 from .helpers import unpack_new_file_id
 
 logger = logging.getLogger(__name__)
