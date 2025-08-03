@@ -2,7 +2,7 @@ import re
 import logging
 
 from pymongo.errors import DuplicateKeyError
-from umongo import Instance, Document, fields
+from beanie import Document, init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient
 from marshmallow.exceptions import ValidationError
 
@@ -19,13 +19,13 @@ instance = Instance.from_db(database)
 
 @instance.register
 class Media(Document):
-    file_id = fields.StrField(attribute='_id')
-    file_ref = fields.StrField(allow_none=True)
-    file_name = fields.StrField(required=True)
-    file_size = fields.IntField(required=True)
-    file_type = fields.StrField(allow_none=True)
-    mime_type = fields.StrField(allow_none=True)
-    caption = fields.StrField(allow_none=True)
+    file_id = int(attribute='_id')
+    file_ref = str(allow_none=True)
+    file_name = str(required=True)
+    file_size = int(required=True)
+    file_type = str(allow_none=True)
+    mime_type = str(allow_none=True)
+    caption = str(allow_none=True)
 
     class Meta:
         indexes = ('$file_name', )
@@ -34,7 +34,7 @@ class Media(Document):
 
 async def save_file(media):
     """Save file in database"""
-
+ client = AsyncIOMotorClient(DATABASE_URI)
     file_id, file_ref = unpack_new_file_id(media.file_id)
 
     try:
@@ -51,7 +51,7 @@ async def save_file(media):
         logger.exception('Error occurred while saving file in database')
     else:
         try:
-            await file.commit()
+            await init_beanie(database=client[DATABASE_NAME], document_models=[Media])
         except DuplicateKeyError:
             logger.warning(media.file_name + " is already saved in database")
         else:
